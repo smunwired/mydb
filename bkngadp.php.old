@@ -1,0 +1,46 @@
+<?php include 'leftmenu.php'; ?>
+<h1>post</h1>
+<?php
+include 'connect.php';
+
+function fn1($conn,$table,$nm) {
+	echo "<p>inserting this nm " . $nm . " into table " . $table;
+        $isrt = "insert into " . $table . "(nm) values (\"" . $nm . "\")";
+        echo "<p>" . $isrt;
+        try {
+                        $stmt = $conn->prepare($isrt);
+                        $stmt->execute();
+                        $last = $conn->lastInsertId();
+                        echo " last id INSERTED: " . $last;
+        } catch (Exception $e) {
+                    echo "<br/>some kind of failure here...";
+                    echo $e->getMessage();
+                      throw $e;
+        }
+        return $last;
+}
+
+
+$carrier =  $_POST['carrier'];
+$outbound_flight_no = $_POST['outbound_flight_no'];
+$inbound_flight_no = $_POST['inbound_flight_no'];
+if (!empty($carrier)) {
+	$new_carrier_id = fn1($conn,'bk_carrier',$carrier);
+	echo "new carrier id " . $new_carrier_id;
+} else { $carrier = $_POST['carrier_id']; }
+if (!empty($outbound_flight_no)) {
+	$outbound = fn1($conn,'bk_flight',$outbound_flight_no);
+	echo "new outbound flight no " . $outbound;
+} else { $outbound=$_POST['outbound_flight_id']; }
+if (!empty($inbound_flight_no)) {
+	$inbound = fn1($conn,'bk_flight',$inbound_flight_no);
+	echo "new inbound flight no " . inbound;
+} else { $inbound = $_POST['inbound_flight_id']; }
+echo "<p/>outbound : " . $outbound;
+echo "<p/>inbound : " . $inbound;
+// FORMAT AN INSERT STATEMENT
+$isrt = "insert into bk_booking(carrier,booking,booked,outbound,outdt,inbound,indt,cost,notes) values (" . $carrier . ",\"" . $_POST['booking_ref'] . "\",\"" . $_POST['date_booked'] . "\"," .  $outbound . ",\"" . $_POST['outbound_date'] . "\"," . $inbound . ",\"" . $_POST['inbound_date'] . "\"," . $_POST['cst'] . ",\"" . $_POST['nt'] . "\")"; 
+echo $isrt;
+
+
+?>

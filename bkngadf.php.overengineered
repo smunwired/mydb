@@ -1,0 +1,195 @@
+<?php include 'leftmenu.php' ?>
+<h1>add booking form</h1>
+
+<?php
+include 'connect.php';
+?>
+<form name="bkngadf" action="bkngadp.php" method="post">
+<table class="nobr">
+<tr>
+	<td>booking ref</td>
+	<td><input name="booking_ref"></input></td>
+</tr>
+<tr>
+	<td>date booked</td>
+	<td><input name="date_booked"></input></td>
+</tr>
+<tr>
+	<td>carrier</td>
+<?php
+$sql = "select id,nm from bk_carrier";
+echo "	<td><select name=\"carrier_id\"><option value=\"\">";
+	foreach($conn->query($sql) as $row) {
+        	echo "<option value=\"". $row['id'] . "\"";
+          	echo ">";
+        	echo $row['nm'];
+	}
+echo "</select></td>";
+?>
+	<td><i>new carrier</i></td>
+	<td><input name="carrier"></input></td></tr>
+<?php
+
+
+
+
+
+
+
+
+$sql = "select id,nm from bk_flight";
+echo "
+<tr>
+	<td><h2>outbound</h2></td>
+</tr>
+<tr>
+	<td>date</td>
+	<td><input name=\"outbound_date\"></input></td>
+	<td>flight no</td>
+	<td>";
+$sql="select id,nm from bk_flight order by 2";
+		echo "<select name=\"outbound_flight_id\">
+			<option value=\"\">";
+			foreach($conn->query($sql) as $row) {
+				echo "<option value=\"". $row['id'] . "\">" . $row['nm'];
+			}
+		echo "</select>
+	</td>
+</tr>
+<tr>
+	<td><h3>OR enter new outbound flight details</h3></td>
+</tr>
+<tr>
+	<td colspan=\"5\">
+		<table border=\1\">
+			<tr><th>flight_no<th>departing<th>time<th>arriving<th>time</tr>
+			<tr>
+				<td><input name=\"outbound_new_flight_no\" value=\"nofn\"></input></td>
+				<td>
+					<table>
+						<tr>
+							<td colspan=\"2\">";
+							$sql="select id,nm from bk_destination order by 2";
+							echo "<select name=\"outbound_new_flight_departure_dest_id\">
+							<option value=\"\">";
+							foreach($conn->query($sql) as $row) {
+								echo "<option value=\"". $row['id'] . "\">" . $row['nm'];
+							}
+							echo "</select>
+							</td>
+						</tr>
+						<tr><th>new destination<th>new code</tr>
+						<tr>
+							<td><input name=\"outbound_new_flight_dep_dest_name\" value=\"nofddn\"></input></td>
+							<td><input name=\"outbound_new_flight_dep_dest_code\" value=\"nofddc\"></input></td>
+						</tr>
+					</table>
+				</td>
+				<td><input name=\"outbound_new_flight_depart_time\" value=\"nofdt\"></input></td>
+				<td>
+					<table>
+						<tr>
+							<td colspan=\"2\">";
+							$sql="select id,nm from bk_destination order by 2";
+							echo "<select name=\"outbound_new_flight_arr_dest_id\">
+							<option value=\"\">";
+							foreach($conn->query($sql) as $row) {
+								echo "<option value=\"". $row['id'] . "\">" . $row['nm'];
+							}
+							echo "</select>
+							</td>
+						</tr>
+						<tr><th>new destination<th>new code</tr>
+						<tr>
+							<td><input name=\"outbound_new_flight_arr_dest_name\" value=\"nofadn\"></input></td>
+							<td><input name=\"outbound_new_flight_arr_dest_code\" value=\"nofadc\"></input></td></tr>
+					</table>
+				</td>
+				<td><input name=\"outbound_new_flight_arrival_time\" value=\"nofat\"></input></td>
+			</tr>
+		</table>
+	</td>
+</tr>";
+
+$sql = "select id,nm from bk_flight";
+echo "
+<tr>
+	<td><h2>inbound</h2></td>
+</tr>
+<tr>
+	<td>date</td>
+	<td><input name=\"inbound_date\"></input></td>
+	<td>flight no</td>
+	<td>";
+$sql="select id,nm from bk_flight order by 2";
+		echo "<select name=\"inbound_flight_id\">
+			<option value=\"\">";
+			foreach($conn->query($sql) as $row) {
+				echo "<option value=\"". $row['id'] . "\">" . $row['nm'];
+			}
+		echo "</select>
+	</td>
+</tr>
+<tr>
+	<td><h3>OR enter new inbound flight details</h3></td>
+</tr>
+<tr>
+	<td colspan=\"5\">
+		<table border=\1\">
+			<tr><th>flight_no<th>departing<th>time<th>arriving<th>time</tr>
+			<tr>
+				<td><input name=\"inbound_new_flight_no\" value=\"infn\"></input></td>
+				<td>
+					<table>
+						<tr>
+							<td colspan=\"2\">";
+							$sql="select id,nm from bk_destination order by 2";
+							echo "<select name=\"inbound_new_flight_departure_dest_id\">
+							<option value=\"\">";
+							foreach($conn->query($sql) as $row) {
+								echo "<option value=\"". $row['id'] . "\">" . $row['nm'];
+							}
+							echo "</select>
+							</td>
+						</tr>
+						<tr><th>new destination<th>new code</tr>
+						<tr>
+							<td><input name=\"inbound_new_flight_dep_dest_name\" value=\"infddn\"></input></td>
+							<td><input name=\"inbound_new_flight_dep_dest_code\" value=\"infddc\"></input></td>
+						</tr>
+					</table>
+				</td>
+				<td><input name=\"inbound_new_flight_depart_time\" value=\"infdt\"></input></td>
+				<td>
+					<table>
+						<tr>
+							<td colspan=\"2\">";
+							$sql="select id,nm from bk_destination order by 2";
+							echo "<select name=\"inbound_new_flight_arr_dest_id\">
+							<option value=\"\">";
+							foreach($conn->query($sql) as $row) {
+								echo "<option value=\"". $row['id'] . "\">" . $row['nm'];
+							}
+							echo "</select>
+							</td>
+						</tr>
+						<tr><th>new destination<th>new code</tr>
+						<tr>
+							<td><input name=\"inbound_new_flight_arr_dest_name\" value=\"infadn\"></input></td>
+							<td><input name=\"inbound_new_flight_arr_dest_code\" value=\"infadc\"></input></td></tr>
+					</table>
+				</td>
+				<td><input name=\"inbound_new_flight_arrival_time\" value=\"infat\"></input></td>
+			</tr>
+		</table>
+	</td>
+</tr>";
+?>
+<tr><td>cost</td><td><input name="cst"></input></td></tr>
+<tr><td>notes</td><td><input name="nt"></input></td></tr>
+<tr><td align="center" colspan="4"><input type="submit"></input></td></tr>
+</table></form>
+<?php
+include 'sitemap.php';
+?>
+

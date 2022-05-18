@@ -1,0 +1,142 @@
+<?php include 'leftmenu.php'; ?>
+<h2>booking add post</h2>
+<?php
+$servername = "localhost";
+$username = "stef";
+$password = "pass";
+$dbname = "mydb";
+if (empty($_POST['trd'])) { $trd="null"; } else { $trd= "'" . $_POST['trd'] . "'"; }
+if (empty($_POST['outbound_flight_id_1'])) { $outbound_flight_id_1='null'; } else { $outbound_flight_id_1=$_POST['outbound_flight_id_1']; }
+if (empty($_POST['outbound_flight_id_2'])) { $outbound_flight_id_2='null'; } else { $outbound_flight_id_2=$_POST['outbound_flight_id_2']; }
+echo "<br/>flight id 2 : " . $outbound_flight_id_2;
+if (empty($_POST['inbound_flight_id'])) { $inbound_flight_id='null'; } else { $inbound_flight_id=$_POST['inbound_flight_id']; }
+if (empty($_POST['inbound_date'])) { 
+  $inbound_date='null'; 
+} else { 
+  $inbound_date=$_POST['inbound_date']; 
+}
+if (empty($_POST['outbound_date'])) { $outbound_date='null'; } else { $outbound_date=$_POST['outbound_date']; }
+
+try {
+  $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+  // set the PDO error mode to exception
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  if (!empty($_POST['new_booking_type'])) {
+    $sql="insert into bk_booking_type(nm) values (\"" . $_POST['new_booking_type'] . "\")";
+    /*
+    try {
+    */
+      $stmt = $conn->prepare($sql);
+      $stmt->execute();
+      $bktyp=$conn->lastInsertId();
+      echo "<br/>lstid for bk_booking_type : " . $bktyp;
+/*
+    } catch {
+      echo $sql . "<br/>" . $e->getMessage();
+    }
+    */
+    echo "<br/>new booking type not empty." . $sql;
+  } else {
+    $bktyp = $_POST['bktyp'];
+  }
+  echo "<br/>booking type " . $bktyp . $outbound_date . " " . $dbname . " anything!";
+  echo "<br/>type : " . $_POST['bktyp'];;
+  //NEW SUPPLIER
+//  if (!empty($_POST['new_supplier'])) {
+//    $isrt="insert into bk_carrier(nm) values (\"" . $_POST['new_supplier']  . "\")";
+//    echo "<br/> new supplier " . $isrt;
+//    try {
+//      $stmt = $conn->prepare($isrt);
+//      echo "<br/> IN THE TRY LOOP new supplier " . $stmt;
+//      $stmt->execute();
+//      echo "<br/> IN THE TRY LOOP new supplier " . $stmt;
+//      $lastcrr = $conn->lastInsertId();
+//      echo "<br/> IN THE TRY LOOP new supplier " . $lastcrr;
+//      echo " last id INSERTED: " . $lastcrr;
+//    } catch (Exception $e) {
+//      echo "<br/> FAILED new supplier " . $isrt;
+//      echo "<br/>some kind of failure here...";
+//      echo $e->getMessage();
+//    }
+//  }
+//  if ($_POST['bktyp']==6) {
+    if (!empty($_POST['new_supplier'])) {
+      $sql="insert into bk_carrier(nm) values (\"" . $_POST['new_supplier'] . "\")";
+      $stmt = $conn->prepare($sql);
+      $stmt->execute();
+      $carrier=$conn->lastInsertId();
+      echo "<br/>lastid : " . $lstid;
+    }
+    if (empty($carrier)) {
+      if (empty($_POST['carrier'])) {
+        echo "NO CARRIER, THIS WILL NOT WORK";
+      } else {
+        $carrier = $_POST['carrier'];
+      }
+    } else {
+      $carrier = $lstid;
+    }
+    $sql = "insert into bk_booking(carrier,ref,booked,cost,notes,outst,inst,type,event_date_start,event_date_end) 
+    values (" . $carrier .  ",\"
+    " . $_POST['booking'] .  "\",\"" . $_POST['booked'] .  "\",
+    " . $_POST['cost'] .  ",
+    \"" . $_POST['notes'] . "\",
+    " . $_POST['outst'] . ",
+    " . $_POST['inst'] . ",
+    " . $bktyp . ", \"" . $_POST['collection_date'] . "\", \"" . $_POST['return_date'] . "\")"; 
+  echo "<br/>sql is" . $sql;
+//  }  
+
+  // Prepare statement
+  $stmt = $conn->prepare($sql);
+
+  try {// execute the query
+    $stmt->execute();
+    // echo a message to say the INSERT succeeded
+    	$lstid=$conn->lastInsertId();
+    echo "<br/>" . $stmt->rowCount() .  "Booking " . $_POST['booking'] . " inserted. ID : " . $lstid ;
+    echo "<br/>booking type : " . $bktyp;
+    if ($bktyp==1)
+	//try to insert stages anyhow
+      $sql="insert into stage(booking,direction,sequence,flight,stage_date,seats) 
+          values (" . $lstid . ",0,1," . $_POST['outbound_flight_id_1'] . ",'" . $_POST['outbound_date'] . "'," . $_POST['outst'] . ")"; echo $sql;
+      try {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        echo "<br/>might have worked, " . $stmt->rowCount() . " row(s) inserted";
+      } catch(PDOException $e) {
+        echo $sql . "<br/>" . $e->getMessage();
+      }
+echo "id_2" . $outbound_flight_id_2;
+      if ($outbound_flight_id_2 > 0) {
+        $sql="insert into stage(booking,direction,sequence,flight,stage_date,seats) 
+          values (" . $lstid . ",0,1," . $_POST['outbound_flight_id_2'] . ",'" . $_POST['outbound_date'] . "'," . $_POST['outst'] . ")"; echo $sql;
+        try {
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
+          echo "<br/>might have worked, " . $stmt->rowCount() . " row(s) inserted";
+        } catch(PDOException $e) {
+          echo $sql . "<br/>" . $e->getMessage();
+        }
+      }  
+      $sql="insert into stage(booking,direction,sequence,flight,stage_date,seats) 
+          values (" . $lstid . ",1,1," . $_POST['inbound_flight_id'] . ",'" . $_POST['inbound_date'] . "'," . $_POST['inst'] . ")"; echo $sql;
+      try {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        echo "<br/>might have worked, " . $stmt->rowCount() . " row(s) inserted";
+      } catch(PDOException $e) {
+        echo $sql . "<br/>" . $e->getMessage();
+      }
+    }
+    
+    } catch (PDOException $e) {
+	echo $sql . "<br/>" . $e->getMessage();
+    }
+} catch(PDOException $e) {
+    echo $sql . "<br/>" . $e->getMessage();
+}
+$conn = null;
+include 'includes/bk_links.php';
+?>
+

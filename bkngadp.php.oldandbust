@@ -1,0 +1,58 @@
+<?php include 'leftmenu.php'; ?>
+<h2>booking add post</h2>
+<?php
+echo "right st the start!";
+$servername = "localhost";
+$username = "stef";
+$password = "pass";
+$dbname = "mydb";
+if (empty($_POST['trd'])) { $trd="null"; } else { $trd= "'" . $_POST['trd'] . "'"; }
+echo "right st the start!";
+if (empty($_POST['outbound_flight_id1'])) { $outbound_flight_id1='null'; } else { $outbound_flight_id1=$_POST['outbound_flight_id1']; }
+echo "right st the start!";
+if (empty($_POST['outbound_flight_id2'])) { $outbound_flight_id2='null'; } else { $outbound_flight_id2=$_POST['outbound_flight_id2']; }
+echo "right st the start!";
+if (empty($_POST['inbound_flight_id'])) { $inbound_flight_id='null'; } else { $inbound_flight_id=$_POST['inbound_flight_id']; }
+echo "<br/>inbound flight id : " . $inbound_flight_id . "<br/>inbound date : " . $_POST['inbound_date'];
+if (empty($_POST['inbound_date'])) { $inbound_date='null'; } else { $inbound_date=concat('"',$_POST['inbound_date'],'"'); }
+echo "<br/>inbound date : " . $inbound_date;
+if (empty($_POST['outbound_date'])) { $outbound_date='null'; } else { $outbound_date=$_POST['outbound_date']; }
+echo "<br/>outbound date : " . $outbound_date;
+try {
+    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $sql = "insert into bk_booking(carrier,booking,booked,outbound,outdt,inbound,indt,cost,notes,outst,inst)
+values (" . $_POST['carrier'] . 
+	",\"" . $_POST['booking'] .
+	"\",\"" . $_POST['booked'] . 
+	"\"," . $outbound_flight_id . 
+	",\"" . $outbound_date . 
+	"\"," . $inbound_flight_id . 
+	"," . $inbound_date . 
+	"," . $_POST['cost'] . 
+	",\"" . $_POST['notes'] . "\"," . $_POST['outst'] . "," . $_POST['inst'] . ")";
+    $sql = "insert into bk_booking(carrier,booking,booked,cost,notes,outst,inst)
+values (" . $_POST['carrier'] . 
+	",\"" . $_POST['booking'] .
+	"\",\"" . $_POST['booked'] . 
+	"\"," . $_POST['cost'] . 
+	",\"" . $_POST['notes'] . "\"," . $_POST['outst'] . "," . $_POST['inst'] . ")";
+echo "<br/>first sql here" . $sql;
+
+    // Prepare statement
+    $stmt = $conn->prepare($sql);
+
+    // execute the query
+    $stmt->execute();
+
+    // echo a message to say the INSERT succeeded
+    $lstid=$conn->lastInsertId();
+
+} catch(PDOException $e) {
+    echo $sql . "<br/>" . $e->getMessage();
+}
+$conn = null;
+include 'includes/bk_links.php';
+?>
+

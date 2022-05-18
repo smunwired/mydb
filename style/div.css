@@ -1,0 +1,22 @@
+#wrapper {
+    width: 900px;
+    border: 1px solid black;
+    overflow: hidden; /* will contain if #first is longer than #second */
+}
+#first {
+    width: 200px;
+    float:left; /* add this */
+    border: 1px solid red;
+}
+#second {
+    border: 1px solid green;
+    width: 200px;
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+}
+input {
+#	width: 200;
+	padding: 0px 0px;
+	margin: 0px 0px;
+	box-sizing: border-box;
+}
+
