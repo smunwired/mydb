@@ -9,8 +9,8 @@ $sql="select m.medium medium, 100 wd, 100 ht, if(url like 'http%',url,concat(\"i
 	join image_title it on it.title=t.id
 	join image i on i.id=it.image
 	join medium m on tm.medium=m.id
-group by m.medium, wd, ht, if(url like 'http%',url,concat(\"images/\",url)), alt, i.id 
-	order by m.id";
+group by m.id, m.medium, wd, ht, if(url like 'http%',url,concat(\"images/\",url)), alt, i.id 
+	order by m.medium";
 
 foreach($conn->query($sql) as $row) {
 	if ($lasthead!=$row['medium']) {
