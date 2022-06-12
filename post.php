@@ -45,17 +45,13 @@ if ($page=='para') {
     $ttyd = $_POST['ttyd'];
     $accd = $_POST['accd'];
     if ($_POST['std']==0){$std = "null";}else{$std= "'" . $_POST['std'] . "'";}
-    if ($_POST['chq']==0){$chq = "null";}else{$chq=$_POST['chq'];}
     if (isset($_POST['rcpt']))  $rcpt = 1;  else  $rcpt = 0;
-    if ($_POST['chq']==0) { $chq="null"; } else { $chq = $_POST['chq']; }
     if ($_POST['frqd']==0) { $frqd="null"; } else { $frqd = $_POST['frqd']; }
     if ($_POST['crdd']==0) { $crdd="null"; } else { $crdd = $_POST['crdd']; }
     if ($_POST['brnd']==0) { $brnd="null"; } else { $brnd = $_POST['brnd']; }
     if ($_POST['cstd']==0) { $cstd="null"; } else { $cstd = $_POST['cstd']; }
     if (empty($_POST['trd'])) { $trd="null"; } else { $trd= "'" . $_POST['trd'] . "'"; }
     if (empty($_POST['std'])) { $std="null"; } else { $std= "'" . $_POST['std'] . "'"; }
-    if ($_POST['chq']==0){$chq = "null";}else{$chq=$_POST['chq'];}
-    if ($_POST['chq']==0) { $chq="null"; } else { $chq = $_POST['chq']; }
     if ($_POST['frqd']==0) { $frqd="null"; } else { $frqd = $_POST['frqd']; }
 
 //	This page processed three types of request. "add" and "mod" are called from 
@@ -123,7 +119,7 @@ echo $isrt;
   if (empty($_POST['trd'])) { $trd="null"; } else { $trd= "'" . $_POST['trd'] . "'"; }
   if (empty($_POST['std'])) { $std="null"; } else { $std= "'" . $_POST['std'] . "'"; }
   if ($_POST['chq']==0){$chq = "null";}else{$chq=$_POST['chq'];}
-  if ($_POST['chq']==0) { $chq="null"; } else { $chq = $_POST['chq']; }
+  if ($_POST['chq']=='') { $chq="null"; } else { $chq = $_POST['chq']; }
   if ($_POST['frqd']==0) { $frqd="null"; } else { $frqd = $_POST['frqd']; }
   //manually entered creditor will have set $crdd already
   if (empty($crn)) {
