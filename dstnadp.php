@@ -5,11 +5,19 @@ $servername = "localhost";
 $username = "stef";
 $password = "pass";
 $dbname = "mydb";
+
+if (empty($_POST['cd'])) {
+  echo "empty<br/>";
+  $cd='null';
+} else {
+  $cd = ("\"" . $_POST['cd'] . "\"");
+}
+
 try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "insert into bk_destination(cd,nm) values (\"" . $_POST['cd'] . "\",\"" . $_POST['nm'] . "\")";  
+    $sql = "insert into bk_destination(cd,nm) values (" . $cd . ",\"" . $_POST['nm'] . "\")";  
 
     // Prepare statement
     $stmt = $conn->prepare($sql);
@@ -18,13 +26,7 @@ try {
     $stmt->execute();
 
     // echo a message to say the INSERT succeeded
-    echo $stmt->rowCount()
-    .
-    	" row INSERTED successfully.<br/><a href=\"ttlmdadf.php?artist=" . $_POST['artist'] . "&id=" .
-    	 $conn->lastInsertId() .
-    	"\">add medium</a><br/><a href=\"../titlelst.php?id=" .
-    	$_POST['artist'] .
-    	"\">titles</a>";
+    echo $stmt->rowCount() .  " row, ID " .  $conn->lastInsertId() .  " INSERTED successfully.";
 
 } catch(PDOException $e) {
     echo $sql . "<br>" . $e->getMessage();

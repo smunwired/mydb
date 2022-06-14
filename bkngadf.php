@@ -4,7 +4,7 @@
 <?php if ((empty($_GET['grp']))) { $grp="flgt"; } else { $grp = $_GET['grp']; } ?>
 <form method="GET">
 <div style="margin: 20 20 20 20;" align="right"><b>options : </b>
-        <?php           getsel($grp,'flgt','accm','train');               ?>
+<?php           getsel($grp,'flgt','accm','train');               ?>
 </div>
 </form>
 
@@ -12,32 +12,33 @@
 include 'connect.php';
 ?>
 <form name="bkngadf" action="bkngadp.php" method="post">
-<table width=100%>
+<table width=100% style="table-layout: auto;">
+<h2>generic</h2>
 <tr>
   <td>type</td>
   <td>
 <?php
-$sql = "select id,nm from bk_booking_type order by 2";
-echo "<select name=\"bktyp\"><option value=\"\">";
-foreach($conn->query($sql) as $row) {
+  $sql = "select id,nm from bk_booking_type order by 2";
+  echo "<select name=\"bktyp\"><option value=\"\">";
+  foreach($conn->query($sql) as $row) {
 	echo "<option value=\"". $row['id'] . "\">";
 	echo $row['nm'];
-}
-echo "		
-</select></td>
+  }
+  echo "		
+    </select></td>
 	<td>new booking type</td>
 	<td><input name=\"new_booking_type\"></input></td>
 </tr>
 <tr>
-	<td>supplier</td>
-	<td>";
-$sql = "select id,nm from bk_carrier order by 2";
-echo "		<select name=\"carrier\"><option value=\"\">";
-foreach($conn->query($sql) as $row) {
+  <td>supplier</td>
+  <td>";
+  $sql = "select id,nm from bk_carrier order by 2";
+  echo "		<select name=\"carrier\"><option value=\"\">";
+  foreach($conn->query($sql) as $row) {
 	echo "	<option value=\"". $row['id'] . "\">";
 	echo 	$row['nm'];
-}
-echo "</select>
+  }
+  echo "</select>
 	</td>
 	<td>new supplier</td>
 	<td><input name=\"new_supplier\"></input></td>
@@ -67,7 +68,10 @@ echo "</select>
 		}
 		echo "</select>
 	</td>
-</tr>"
+</tr>
+<tr><td>cost</td><td><input name=\"cost\"></input></td></tr>
+<tr><td>notes</td><td><input name=\"notes\"></input></td></tr>
+<tr><td>days/nights</td><td><input name=\"days\"></input></td></tr>"
 ?>
 <tr>
 	<td>
@@ -91,6 +95,10 @@ echo "</select>
 <tr>
 	<td>performance date</td>
 	<td><input name="prfdt"></input></td>
+	<td>event start date/check-in</td>
+	<td><input name="event_start"></input></td>
+	<td>event end date/check-out</td>
+	<td><input name="event_end"></input></td>
 </tr>
 <tr>
 	<td>booking date</td>
@@ -101,7 +109,7 @@ echo "</select>
 </tr>
 <?php
 $sql = "select f.id id,f.nm,d1.nm dp,time_format(dptm,'%H:%i') dptm,d2.nm ar,time_format(artm,'%H:%i') artm from bk_flight f left outer join bk_destination d1 on d1.id=f.dpdst left outer join bk_destination d2 on d2.id=f.ardst order by 2";
-echo "<tr>
+echo "<tr><td colspan=\"6\"><h2>flights outbound/inbound (stage)</h2></td></tr><tr>
 	<td>
 	outbound date </td><td><input name=\"outbound_date\"></input> seats <input size=\"1\" name=\"outst\" value=\"1\"></input>
 	</td>
@@ -132,9 +140,6 @@ foreach($conn->query($sql) as $row) {
 	echo $row['nm'] . " " . $row['dp'] . " " . $row['dptm'] . " " . $row['ar'] . " " . $row['artm'];
 }
 echo "</select></td></tr>
-<tr><td>cost</td><td><input name=\"cost\"></input></td></tr>
-<tr><td>notes</td><td><input name=\"notes\"></input></td></tr>
-<tr><td>days</td><td><input name=\"days\"></input></td></tr>
 <tr><td align=\"center\"colspan=\"2\"><input type=\"submit\"></input></td></tr>
 </table></form>";
 include 'includes/bk_links.php';
