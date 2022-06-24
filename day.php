@@ -154,7 +154,7 @@ foreach($conn->query($sql) as $row) {
       }
 	/* FENCE */
     } else if ($row['str']=='fence') {
-	$sub = 'select id,f_fencing_days(\'' . $row['dt'] . '\') as club from fence where dt=\'2022-06-09\' limit 1';
+	$sub = 'select id,f_fencing_days(\'' . $row['dt'] . '\') as club from fence where dt=\'' . $row['dt'] . '\' limit 1';
       foreach($conn->query($sub) as $sb) {
         echo '<div>' . $sb['club'] . '<a href="fncmdf.php?id=' . $sb['id'] . '">mod</a> <a href="fncdlp.php?id=' . $sb['id'] . '">del</a></div>';
       }
