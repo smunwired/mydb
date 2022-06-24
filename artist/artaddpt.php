@@ -12,7 +12,7 @@ try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     // set the PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$sql = "insert into artist(prefix,firstname,lastname,joinstr,bandname,collaborators,idxnm,predx) values (\"" . $_POST["prefix"] . "\",\"" . $_POST["firstname"] . "\",\"" . $_POST["lastname"] . "\",\"" . $_POST["joinstr"] . "\",\"" . $_POST["bandname"] . "\",\"" . $_POST["collab"] . "\",\"" . $_POST['pfxnm'] . "\",\"" . $_POST['idxnm'] . "\")";
+	$sql = "insert into artist(prefix,firstname,lastname,joinstr,bandname,collaborators,predx,idxnm) values (\"" . $_POST["prefix"] . "\",\"" . $_POST["firstname"] . "\",\"" . $_POST["lastname"] . "\",\"" . $_POST["joinstr"] . "\",\"" . $_POST["bandname"] . "\",\"" . $_POST["collab"] . "\",\"" . $_POST['pfxnm'] . "\",\"" . $_POST['idxnm'] . "\")";
 	// Prepare statement
 
 	$stmt = $conn->prepare($sql);
