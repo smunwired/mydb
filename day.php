@@ -83,13 +83,16 @@ $sql="select dt, yr, mn, dy, str,rdr from (
          union
          select booked dt,date_format(booked,'%Y') yr,date_format(booked,'%M') mn,date_format(booked,'%W %d') dy,'booking' str, 30 rdr from bk_booking
 	 union
-	 select stage_date dt, date_format(stage_date,'%Y') yr, date_format(stage_date,'%M') mn, date_format(stage_date,'%W %d') dy, 'flight', 40 rdr from stage where stage_date != '0000-00-00'
+	 select stage_date dt, date_format(stage_date,'%Y') yr, date_format(stage_date,'%M') mn, date_format(stage_date,'%W %d') dy, 'flight', 40 rdr from stage 
+		where date_format(stage_date ,'%Y-%m-%d')!= '0000-00-00'
          union
          select rdate dt,date_format(rdate,'%Y') yr,date_format(rdate,'%M') mn,date_format(rdate,'%W %d') dy, 'stay',  50 rdr from (
-		select outdt rdate,type from bk_booking union select indt rdate,type from bk_booking) as flights where rdate!='0000-00-00' and type=2
+		select outdt rdate,type from bk_booking union select indt rdate,type from bk_booking) as flights 
+		where date_format(rdate,'%Y-%m-%d') != '0000-00-00' and type=2
          union
          select rdate dt,date_format(rdate,'%Y') yr,date_format(rdate,'%M') mn,date_format(rdate,'%W %d') dy, 'perf',  60 rdr from (
-		select outdt rdate,type from bk_booking union select indt rdate,type from bk_booking) as flights where rdate!='0000-00-00' and type=5
+		select outdt rdate,type from bk_booking union select indt rdate,type from bk_booking) as flights 
+		where date_format(rdate,'%Y-%m-%d') != '0000-00-00' and type=5
          union
          select listen_date dt,date_format(listen_date,'%Y') yr, date_format(listen_date,'%M') mn,date_format(listen_date,'%W %d') dy,'title' str, 100 rdr from title_listen
          union
